@@ -1,13 +1,15 @@
 package;
 
+import entities.Player;
 import flixel.addons.nape.FlxNapeSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
+import flixel.tile.FlxTile;
+import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
-import flixel.addons.nape.FlxNapeTilemap;
 import openfl.Assets;
 import flixel.FlxObject;
 import flixel.util.FlxColor;
@@ -17,10 +19,12 @@ import flixel.util.FlxColor;
  */
 class PlayState extends FlxState
 {
-	var map:FlxNapeTilemap;
-	var player:FlxNapeSprite;
+	var map:FlxTilemap;
+	var background:FlxTilemap;
+	var player:Player;
 	
 	var speed:Float;
+	var jumping:Bool = false;
 	
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -29,29 +33,20 @@ class PlayState extends FlxState
 	{
 		super.create();
 		
-		map = new FlxNapeTilemap();
+		map = new FlxTilemap();
+		map.allowCollisions = FlxObject.ANY;
+		background = new FlxTilemap();
 		
-		map.loadMap(Assets.getText("assets/data/testLevel.txt"), AssetPaths.testLevel__png, 16, 16);
-		map.scale.x = map.scale.y = 2;
+		add(background.loadMap(Assets.getText("assets/data/background.txt"), "assets/images/testLevel.png", 16, 16));
 		
-		map.setTileProperties(2, FlxObject.NONE);
-		map.setTileProperties(3, FlxObject.LEFT);
-		map.setTileProperties(4, FlxObject.CEILING);
-		map.setTileProperties(5, FlxObject.RIGHT);
-		map.setTileProperties(6, FlxObject.FLOOR);
-		map.setTileProperties(7, FlxObject.FLOOR);
+		add(map.loadMap(Assets.getText("assets/data/testLevel.txt"), "assets/images/testLevel.png", 16, 16));
 		
-		add(map);
+		FlxG.worldBounds.set(0, 0, map.width, map.height);
 		
-		player = new FlxNapeSprite();
-		player.makeGraphic(32, 32, FlxColor.PURPLE);
+		add(player = new Player(100, 100));
 		
-		player.x = 70;
-		player.y = FlxG.height - 70;
-		
-		player.createRectangularBody(32, 32);
-		
-		add(player);
+		FlxG.camera.zoom = 2;
+
 	}
 	
 	/**
@@ -67,12 +62,9 @@ class PlayState extends FlxState
 	 * Function that is called once every frame.
 	 */
 	override public function update():Void
-	{
-		super.update();
-		
+	{		
 		FlxG.collide(player, map);
 		
-		map.update();
-		player.update();
-	}	
+		super.update();	
+	}
 }

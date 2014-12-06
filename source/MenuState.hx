@@ -9,7 +9,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
-import flixel.addons.nape.FlxNapeTilemap;
+
 
 /**
  * A FlxState which can be used for the game's menu.
@@ -31,7 +31,7 @@ class MenuState extends FlxState
 		
 		cubes = new FlxSpriteGroup();
 		
-		addCubes(1000);
+		addCubes(500);
 		
 		add(cubes);
 	}
