@@ -9,19 +9,17 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
+import flixel.addons.nape.FlxNapeTilemap;
 
 /**
  * A FlxState which can be used for the game's menu.
  */
 class MenuState extends FlxState
 {
-	var cube1:FlxSprite;
-	var cube2:FlxSprite;
-	
 	var cubes:FlxSpriteGroup;
 	
 	var scaleFactor:Float = 0.8;
-	
+
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
@@ -29,25 +27,13 @@ class MenuState extends FlxState
 	{
 		super.create();
 		
+		FlxG.switchState(new PlayState());
+		
 		cubes = new FlxSpriteGroup();
 		
 		addCubes(1000);
 		
 		add(cubes);
-/*		cube1 = new FlxSprite();
-		cube2 = new FlxSprite();
-		
-		cube1.makeGraphic(50, 50, FlxColor.BLUE);
-		cube2.makeGraphic(50, 50, FlxColor.RED);
-		
-		cube1.scale.x = cube1.scale.y = 1;
-		cube2.scale.x = cube2.scale.y = 50;
-		
-		FlxSpriteUtil.screenCenter(cube1, true, true);
-		FlxSpriteUtil.screenCenter(cube2, true, true);
-		
-		add(cube2);
-		add(cube1);*/
 	}
 	
 	private function addCubes(numberOfCubes:Int):Void {
@@ -100,6 +86,10 @@ class MenuState extends FlxState
 					cube.kill();
 				}
 			}
+		}
+		
+		if (FlxG.keys.justPressed.SPACE) {
+			FlxG.switchState(new PlayState());
 		}
 		
 		cubes.update();
