@@ -19,12 +19,9 @@ import flixel.util.FlxColor;
  */
 class PlayState extends FlxState
 {
-	var map:FlxTilemap;
-	var background:FlxTilemap;
-	var player:Player;
+	var level:Level;
 	
-	var speed:Float;
-	var jumping:Bool = false;
+	var scaleFactor:Float = 0.8;
 	
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -33,17 +30,9 @@ class PlayState extends FlxState
 	{
 		super.create();
 		
-		map = new FlxTilemap();
-		map.allowCollisions = FlxObject.ANY;
-		background = new FlxTilemap();
+		add(level = new Level());
 		
-		add(background.loadMap(Assets.getText("assets/data/background.txt"), "assets/images/testLevel.png", 16, 16));
-		
-		add(map.loadMap(Assets.getText("assets/data/testLevel.txt"), "assets/images/testLevel.png", 16, 16));
-		
-		FlxG.worldBounds.set(0, 0, map.width, map.height);
-		
-		add(player = new Player(100, 100));
+		FlxG.worldBounds.set(0, 0, level.map.map.width, level.map.map.height);
 		
 		FlxG.camera.zoom = 2;
 
@@ -63,7 +52,12 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{		
-		FlxG.collide(player, map);
+		
+		if (FlxG.mouse.justPressed) {
+			level.scale *= scaleFactor;
+			
+			FlxG.worldBounds.set(0, 0, level.map.map.width, level.map.map.height);
+		}
 		
 		super.update();	
 	}

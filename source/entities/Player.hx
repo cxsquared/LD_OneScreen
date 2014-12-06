@@ -31,8 +31,8 @@ class Player extends FlxSprite
 		maxVelocity.set(MOVE_SPEED, JUMP_SPEED);
 		acceleration.y = GRAVITY;
 		
-		setSize(12, 12);
-		offset.set(3, 4);
+		//setSize(12, 12);
+		//offset.set(3, 4);
 		
 		jumpKeys = ["W", "UP", "SPACE"];
 	}
