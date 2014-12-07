@@ -46,6 +46,7 @@ class LevelState extends FlxState
 		
 		if( levelNumber != 1){ // 1 causes it to crash for some reason
 			FlxG.worldBounds.set(0, 0, level.map.width, level.map.height);
+			FlxG.camera.setBounds(0, 0, level.map.width, level.map.height);
 		}
 		
 		setPlayerAttributes();
@@ -71,6 +72,12 @@ class LevelState extends FlxState
 			startingY = 40;
 		}else if (levelNumber == 5 ) {
 			startingX = 40;
+			startingY = -32;
+		}else if (levelNumber == 6 ) {
+			startingX = 690;
+			startingY = -32;
+		}else if (levelNumber == 7 ) {
+			startingX = 45;
 			startingY = -32;
 		} else {
 			startingX = 0;
@@ -115,6 +122,20 @@ class LevelState extends FlxState
 			Player.JUMPS_ALLOWED = 2;
 			Player.CAN_JUMP = true;
 			//trace("Level 3 stats set");
+		}else if (levelNumber == 6 ) {
+			Player.MOVE_SPEED = 125;
+			Player.GRAVITY = 850;
+			Player.JUMP_SPEED = 375;
+			Player.JUMPS_ALLOWED = 2;
+			Player.CAN_JUMP = true;
+			//trace("Level 3 stats set");
+		} else if (levelNumber == 7 ) {
+			Player.MOVE_SPEED = 125;
+			Player.GRAVITY = 850;
+			Player.JUMP_SPEED = 375;
+			Player.JUMPS_ALLOWED = 2;
+			Player.CAN_JUMP = true;
+			//trace("Level 3 stats set");
 		} else {
 			Player.MOVE_SPEED = 175;
 			Player.GRAVITY = 1000;
@@ -140,7 +161,11 @@ class LevelState extends FlxState
 		} else if (levelNumber == 4) {
 			FlxG.camera.zoom = 1; 
 		}else if (levelNumber == 5) {
-			FlxG.camera.zoom = .8333; 
+			FlxG.camera.zoom = .8333;
+		}else if (levelNumber == 6) {
+			FlxG.camera.zoom = 0.833; 
+		}else if (levelNumber == 7) {
+			FlxG.camera.zoom = 0.833; 
 		} else {
 			FlxG.camera.zoom = 1;
 		}
@@ -187,6 +212,10 @@ class LevelState extends FlxState
 		}
 		
 		super.update();	
+		
+		if (FlxG.keys.anyJustPressed(["M"])) {
+			SoundController.toggleSound();
+		}
 		
 		if (collided) {
 			Player.CAN_MOVE = false;

@@ -27,9 +27,11 @@ class MenuState extends FlxState
 	{
 		super.create();
 		
-		SoundController.playMusic();
+		if (!SoundController.playing) {
+			SoundController.playMusic();
+		}
 		
-		FlxG.switchState(new TextState(1, 1));
+		FlxG.switchState(new TextState(6, 32));
 		
 		cubes = new FlxSpriteGroup();
 		

@@ -4,6 +4,7 @@ import flixel.util.FlxRandom;
 import vault.Sfxr;
 import vault.SfxrParams;
 import flixel.FlxG;
+import flixel.system.FlxSound;
 
 /**
  * ...
@@ -11,6 +12,7 @@ import flixel.FlxG;
  */
 class SoundController
 {
+	public static var playing:Bool = false;
 
 	public static function playHit():Void {
 		var random:Int = FlxRandom.intRanged(0, 3);
@@ -68,6 +70,17 @@ class SoundController
 	
 	public static function playMusic():Void {
 		FlxG.sound.playMusic(AssetPaths.dtrh_master01__mp3);
+		playing = true;
+	}
+	
+	public static function toggleSound():Void {
+		if (playing) {
+			FlxG.sound.pause();
+			playing = false;
+		} else {
+			FlxG.sound.resume();
+			playing = true;
+		}
 	}
 	
 }

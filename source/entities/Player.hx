@@ -5,6 +5,8 @@ import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.util.FlxRandom;
 import flixel.util.FlxMath;
+import openfl.geom.ColorTransform;
+import flixel.util.FlxColorUtil;
 /**
  * ...
  * @author Cxsquared
@@ -35,9 +37,6 @@ class Player extends FlxSprite
 		drag.set(MOVE_SPEED * 8, MOVE_SPEED * 8);
 		maxVelocity.set(MOVE_SPEED, JUMP_SPEED);
 		acceleration.y = GRAVITY;
-		
-		//setSize(12, 12);
-		//offset.set(3, 4);
 		
 		jumpKeys = ["W", "UP", "SPACE"];
 	}

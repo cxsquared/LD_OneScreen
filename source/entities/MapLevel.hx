@@ -30,5 +30,7 @@ class MapLevel
 			spike.allowCollisions = FlxObject.ANY;
 			spike.loadMap(Assets.getText("assets/data/maps/spike" + levelNumber + ".txt"), "assets/images/tilesets/level" + levelNumber + ".png", tileSize, tileSize);
 		}
+		
+		//trace(map.widthInTiles);
 	}
 }

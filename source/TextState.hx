@@ -55,6 +55,10 @@ class TextState extends FlxState
 			timer = new FlxTimer(3.0, levelTimer, 1);
 		} else if (levelNumber == 5) {
 			timer = new FlxTimer(4.0, levelTimer, 1);
+		}else if (levelNumber == 6) {
+			timer = new FlxTimer(3.0, levelTimer, 1);
+		}else if (levelNumber == 6) {
+			timer = new FlxTimer(4.0, levelTimer, 1);
 		} else {
 			timer = new FlxTimer(5.0, levelTimer, 1);
 		}
@@ -63,7 +67,7 @@ class TextState extends FlxState
 	private function setText():Void {
 		if (levelNumber == 1) {
 			text.text = "Begin at the beginning, and go on till you come to the end: then stop.";
-			text.setFormat(24, FlxColor.TEAL, "center");
+			text.setFormat(24, FlxRandom.color(100), "center");
 		} else if (levelNumber == 2) {
 			text.text = "Would you tell me, please, which way I ought to go from here?";
 			text.setFormat(24, FlxRandom.color(100), "center");
@@ -76,8 +80,14 @@ class TextState extends FlxState
 		}else if (levelNumber == 5) {
 			text.text = "Then it doesn't matter which way you go.";
 			text.setFormat(24, FlxRandom.color(100), "center");
+		}else if (levelNumber == 6) {
+			text.text = "Curiouser and curiouser!";
+			text.setFormat(24, FlxRandom.color(100), "center");
+		}else if (levelNumber == 7) {
+			text.text = "I knew who I was this morning, but I've changed a few times since then.";
+			text.setFormat(24, FlxRandom.color(100), "center");
 		} else {
-			text.text = "You should see this.";
+			text.text = "You shouldn't see this.";
 		}
 	}
 	
@@ -89,6 +99,10 @@ class TextState extends FlxState
 	override public function update():Void {
 		if (FlxG.keys.anyJustPressed(["SPACE", "W", "S", "D", "A", "UP", "DOWN", "LEFT", "RIGHT"])) {
 			changeLevel();
+		}
+		
+		if (FlxG.keys.anyJustPressed(["M"])) {
+			SoundController.toggleSound();
 		}
 	}
 	
