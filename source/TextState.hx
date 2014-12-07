@@ -60,7 +60,7 @@ class TextState extends FlxState
 		}else if (levelNumber == 6) {
 			timer = new FlxTimer(4.0, levelTimer, 1);
 		} else {
-			timer = new FlxTimer(5.0, levelTimer, 1);
+			timer = new FlxTimer(6.0, levelTimer, 1);
 		}
 	}
 	
@@ -85,6 +85,24 @@ class TextState extends FlxState
 			text.setFormat(24, FlxRandom.color(100), "center");
 		}else if (levelNumber == 7) {
 			text.text = "I knew who I was this morning, but I've changed a few times since then.";
+			text.setFormat(24, FlxRandom.color(100), "center");
+		}else if (levelNumber == 8) {
+			text.text = "Down The Rabbit Hole";
+			text.setFormat(24, FlxRandom.color(100), "center");
+		}else if (levelNumber == 9) {
+			text.text = "Created by Cody Claborn @Cxsquared";
+			text.setFormat(24, FlxRandom.color(100), "center");
+		}else if (levelNumber == 10) {
+			text.text = "Ludum Dare 31/48";
+			text.setFormat(24, FlxRandom.color(100), "center");
+		}else if (levelNumber == 11) {
+			text.text = "Made using Haxeflixel";
+			text.setFormat(24, FlxRandom.color(100), "center");
+		}else if (levelNumber == 12) {
+			text.text = "Quotes from Alice in Wonderland by Lewis Carol";
+			text.setFormat(24, FlxRandom.color(100), "center");
+		} else if (levelNumber == 13) {
+			text.text = "FIN!";
 			text.setFormat(24, FlxRandom.color(100), "center");
 		} else {
 			text.text = "You shouldn't see this.";
@@ -112,7 +130,15 @@ class TextState extends FlxState
 	
 	private function changeLevel():Void {
 		FlxG.camera.fade(FlxColor.BLACK, 0.5, false, function() {
-			FlxG.switchState(new LevelState(levelNumber, tileSize));
+			if (levelNumber >= 8) {
+				if (levelNumber >= 13) {
+					FlxG.switchState(new MenuState());
+				} else {	
+					FlxG.switchState(new TextState(++levelNumber, tileSize));
+				}
+			} else {
+				FlxG.switchState(new LevelState(levelNumber, tileSize));
+			}
 		});
 	}
 }
