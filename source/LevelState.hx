@@ -17,8 +17,12 @@ class LevelState extends FlxState
 	var levelNumber:Int;
 	var tileSize:Int;
 	
+	var startingX:Int;
+	var startingY:Int;
+	
 	public function new(levelNumber:Int, tileSize:Int) {
 		super();
+		//trace("Starting level " + levelNumber + " with tile size of " + tileSize);
 		this.levelNumber = levelNumber;
 		this.tileSize = tileSize;
 	}
@@ -31,52 +35,82 @@ class LevelState extends FlxState
 		add(level.background);
 		add(level.map);
 		
-		FlxG.worldBounds.set(0, 0, level.map.width, level.map.height);
+		if (levelNumber >= 4) {
+			add(level.spike);
+		}
 		
-		addPlayer(tileSize);
+		if( levelNumber != 1){ // 1 causes it to crash for some reason
+			FlxG.worldBounds.set(0, 0, level.map.width, level.map.height);
+		}
+		
 		setPlayerAttributes();
+		addPlayer(tileSize);
 		
 		zoomCamera();
+		
 	}
 	
 	private function addPlayer(size:Int):Void {
 		if (levelNumber == 1) {
-			add(player = new Player(1, 2, size));
+			startingX = 1;
+			startingY = 2;
 		} else if (levelNumber == 2 ) {
-			add(player = new Player(16, 8, size));
+			startingX = 16;
+			startingY = -8;
 		} else if (levelNumber == 3 ) {
-			add(player = new Player(256, 32, size));
+			startingX = 256;
+			startingY = -32;
+		} else if (levelNumber == 4 ) {
+			startingX = 1152;
+			startingY = 70;
 		} else {
-			add(player = new Player(0, 0, size));
+			startingX = 0;
+			startingY = 0;
 		}
+		add(player = new Player(startingX, startingY, size));
 	}
 	
 	private function setPlayerAttributes():Void {
 		if (levelNumber == 1) {
-			Player.MOVE_SPEED = 25;
+			Player.MOVE_SPEED = 15;
 			Player.GRAVITY = 100;
 			Player.JUMP_SPEED = 0;
 			Player.JUMPS_ALLOWED = 0;
 			Player.CAN_JUMP = false;
+			//trace("Level 1 stats set");
 		} else if (levelNumber == 2 ) {
-			Player.MOVE_SPEED = 50;
-			Player.GRAVITY = 250;
-			Player.JUMP_SPEED = 100;
+			Player.MOVE_SPEED = 40;
+			Player.GRAVITY = 500;
+			Player.JUMP_SPEED = 50;
 			Player.JUMPS_ALLOWED = 1;
 			Player.CAN_JUMP = true;
+			//trace("Level 2 stats set");
 		} else if (levelNumber == 3 ) {
-			Player.MOVE_SPEED = 100;
-			Player.GRAVITY = 500;
-			Player.JUMP_SPEED = 400;
+			Player.MOVE_SPEED = 175;
+			Player.GRAVITY = 850;
+			Player.JUMP_SPEED = 325;
 			Player.JUMPS_ALLOWED = 2;
 			Player.CAN_JUMP = true;
+			//trace("Level 3 stats set");
+		}else if (levelNumber == 4 ) {
+			Player.MOVE_SPEED = 750;
+			Player.GRAVITY = 2000;
+			Player.JUMP_SPEED = 625;
+			Player.JUMPS_ALLOWED = 2;
+			Player.CAN_JUMP = true;
+			//trace("Level 3 stats set");
 		} else {
-			Player.MOVE_SPEED = 100;
-			Player.GRAVITY = 500;
-			Player.JUMP_SPEED = 200;
-			Player.JUMPS_ALLOWED = 0;
+			Player.MOVE_SPEED = 175;
+			Player.GRAVITY = 1000;
+			Player.JUMP_SPEED = 325;
+			Player.JUMPS_ALLOWED = 2;
 			Player.CAN_JUMP = true;
 		}
+			//trace(Player.MOVE_SPEED);
+			//trace(Player.GRAVITY);
+			//trace(Player.JUMP_SPEED);
+			//trace(Player.JUMPS_ALLOWED);
+			//trace(Player.CAN_JUMP);
 
 	}
 	
@@ -87,6 +121,8 @@ class LevelState extends FlxState
 			FlxG.camera.zoom = 20;
 		} else if (levelNumber == 3) {
 			FlxG.camera.zoom = 1.25; 
+		} else if (levelNumber == 4) {
+			FlxG.camera.zoom = 0.5; 
 		} else {
 			FlxG.camera.zoom = 1;
 		}
@@ -100,6 +136,9 @@ class LevelState extends FlxState
 	{
 		level.background.destroy();
 		level.map.destroy();
+		if (levelNumber >= 4) {
+			//level.spike.destroy();
+		}
 		player.destroy();
 		super.destroy();
 	}
@@ -109,12 +148,26 @@ class LevelState extends FlxState
 	 */
 	override public function update():Void
 	{
-		FlxG.collide(player, level.map);
+		if (FlxG.collide(player, level.map)) {
+			Player.CAN_MOVE = true;
+		} else {
+			if (levelNumber >= 4) {
+				if (FlxG.collide(player, level.spike)) {
+					player.x = startingX;
+					player.y = startingY;
+				}
+			}
+		}
 		
 		super.update();	
 		
 		if (player.y > level.map.height + player.height) {
-			FlxG.switchState(new LevelState(levelNumber++, Std.int(level.map.width)));
+			Player.CAN_MOVE = false;
+			if (levelNumber >= 3) {
+				FlxG.switchState(new LevelState(++levelNumber, 64));
+			} else {
+				FlxG.switchState(new LevelState(++levelNumber, Std.int(level.map.width) - tileSize));
+			}
 		}
 	}
 	

@@ -16,6 +16,7 @@ class Player extends FlxSprite
 	public static var JUMP_SPEED:Int = 200;
 	public static var JUMPS_ALLOWED:Int = 2;
 	public static var CAN_JUMP:Bool = false;
+	public static var CAN_MOVE:Bool = true;
 	
 	private var jumpTime:Float = -1;
 	private var timesJumped:Int = 0;
@@ -44,16 +45,17 @@ class Player extends FlxSprite
 		acceleration.x = 0;
 		acceleration.y = GRAVITY;
 		
-		if (FlxG.keys.anyPressed(["LEFT", "A"])) {
-			acceleration.x = -drag.x;
-		} else if (FlxG.keys.anyPressed(["RIGHT", "D"])) {
-			acceleration.x = drag.x;
+		if (CAN_MOVE) {
+			if (FlxG.keys.anyPressed(["LEFT", "A"])) {
+				acceleration.x = -drag.x;
+			} else if (FlxG.keys.anyPressed(["RIGHT", "D"])) {
+				acceleration.x = drag.x;
+			}
+			
+			if (CAN_JUMP) {
+				jump();			
+			}
 		}
-		
-		if (CAN_JUMP) {
-			jump();			
-		}
-		
 		super.update();
 	}
 	
@@ -68,7 +70,7 @@ class Player extends FlxSprite
 		if ((FlxG.keys.anyPressed(jumpKeys)) && (jumpTime >= 0)) {
 			jumpTime += FlxG.elapsed;
 			
-			if (jumpTime > 0.45) {
+			if (jumpTime > 0.25) {
 				jumpTime = 1;
 			} else if (jumpTime > 0) {
 				velocity.y = -0.6 * maxVelocity.y;
