@@ -46,7 +46,7 @@ class LevelState extends FlxState
 		
 		if( levelNumber != 1){ // 1 causes it to crash for some reason
 			FlxG.worldBounds.set(0, 0, level.map.width, level.map.height);
-			FlxG.camera.setBounds(0, 0, level.map.width, level.map.height);
+			//FlxG.camera.setBounds(0, 0, level.map.width, level.map.height);
 		}
 		
 		setPlayerAttributes();
@@ -228,11 +228,11 @@ class LevelState extends FlxState
 		if (player.y > level.map.height + player.height) {
 			Player.CAN_MOVE = false;
 			FlxG.camera.fade(FlxColor.BLACK, .33, false, function() {
-			if (levelNumber >= 3) {
-				FlxG.switchState(new TextState(++levelNumber, 32));
-			} else {
-				FlxG.switchState(new TextState(++levelNumber, Std.int(level.map.width) - tileSize));
-			}
+				if (levelNumber >= 3) {
+					FlxG.switchState(new TextState(++levelNumber, 32));
+				} else {
+					FlxG.switchState(new TextState(++levelNumber, Std.int(level.map.width) - tileSize));
+				}
 			});
 		}
 	}

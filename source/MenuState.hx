@@ -9,6 +9,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
+import flixel.util.FlxRandom;
 
 
 /**
@@ -16,9 +17,11 @@ import flixel.util.FlxSpriteUtil;
  */
 class MenuState extends FlxState
 {
-	var cubes:FlxSpriteGroup;
-	
-	var scaleFactor:Float = 0.8;
+	var title:FlxText;
+	var ludum:FlxText;
+	var instruction:FlxText;
+	var space:FlxText;
+	var by:FlxText;
 
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -31,39 +34,25 @@ class MenuState extends FlxState
 			SoundController.playMusic();
 		}
 		
-		FlxG.switchState(new TextState(1, 1));
+		title= new FlxText(50, 50, 400, "Down The Rabbit Hole");
+		title.setFormat(24, FlxRandom.color(100), "center");
+		add (title);
 		
-		cubes = new FlxSpriteGroup();
+		ludum = new FlxText(50, 100, 400, "Ludum Dare 31/48");
+		ludum.setFormat(18, FlxRandom.color(100), "center");
+		add(ludum);
 		
-		addCubes(500);
+		instruction = new FlxText(50, 500, 400, "Use the arrow keys or WSAD to move. Space to jump or double jump. Press M to mute sound.");
+		instruction.setFormat(14, FlxRandom.color(100) , "center");
+		add(instruction);
 		
-		add(cubes);
-	}
-	
-	private function addCubes(numberOfCubes:Int):Void {
-		var maxSize:Int = numberOfCubes * 25;
-		var color:Int = 1;
-		for ( i in 0...numberOfCubes ) {
-
-			var cube:FlxSprite = new FlxSprite();
-			
-			if (color % 2 == 0) {
-				//trace("Graphic made");
-				cube.makeGraphic(50, 50, FlxColor.BLUE);
-				color = 1;
-			} else {
-				//trace("Graphic made");
-				cube.makeGraphic(50, 50, FlxColor.RED);
-				color++;
-			}
-			
-			cube.scale.x = cube.scale.y = maxSize - 25;
-			//trace("Max size = " + maxSize);
-			maxSize -= 25;
-			FlxSpriteUtil.screenCenter(cube, true, true);
-			cubes.add(cube);
-		}
-		//trace("add cube called");
+		space = new FlxText(320, 600, 100, "Press Space to Start");
+		space.setFormat(16, FlxRandom.color(100), "center");
+		add(space);
+		
+		by = new FlxText(600, 600, 110, "Cody Claborn @Cxsquared");
+		by.setFormat(14, FlxRandom.color(100), "right");
+		add(by);
 	}
 	
 	/**
@@ -72,8 +61,12 @@ class MenuState extends FlxState
 	 */
 	override public function destroy():Void
 	{
+		title.destroy();
+		ludum.destroy();
+		instruction.destroy();
+		space.destroy();
+		by.destroy();
 		super.destroy();
-		cubes.destroy();
 	}
 
 	/**
@@ -81,17 +74,11 @@ class MenuState extends FlxState
 	 */
 	override public function update():Void
 	{
-		super.update();
-		
-		if (FlxG.mouse.justPressed) {
-			for (cube in cubes.members) {
-				cube.scale.x = cube.scale.y *= scaleFactor;
-				if (cube.scale.x < 0.05) {
-					cube.kill();
-				}
-			}
+		if (FlxG.keys.anyJustPressed(["SPACE", "ENTER"])) {
+			FlxG.camera.fade(FlxColor.BLACK, .33, false, function() {
+				FlxG.switchState(new TextState(1, 1));
+			});
 		}
-		
-		cubes.update();
+		super.update();
 	}	
 }
