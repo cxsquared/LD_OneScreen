@@ -5,6 +5,7 @@ import entities.Player;
 import flixel.FlxState;
 import flixel.FlxG;
 import flixel.util.FlxDestroyUtil;
+import flixel.util.FlxColor;
 
 /**
  * ...
@@ -22,6 +23,8 @@ class LevelState extends FlxState
 	var startingY:Int;
 	
 	var collided:Bool;
+	
+	var starting:Bool = true;
 	
 	public function new(levelNumber:Int, tileSize:Int) {
 		super();
@@ -51,6 +54,7 @@ class LevelState extends FlxState
 		
 		zoomCamera();
 		
+		
 	}
 	
 	private function addPlayer(size:Int):Void {
@@ -67,7 +71,7 @@ class LevelState extends FlxState
 			startingX = 576;
 			startingY = 40;
 		}else if (levelNumber == 5 ) {
-			startingX = 32;
+			startingX = 40;
 			startingY = -32;
 		} else {
 			startingX = 0;
@@ -165,6 +169,11 @@ class LevelState extends FlxState
 	{
 		if (FlxG.collide(player, level.map)) {
 			Player.CAN_MOVE = true;
+			if (starting) {
+				//FlxG.camera.shake(0.01, 0.5);
+			} else {
+				//FlxG.camera.shake(0.001, 0.001);
+			}
 		} else if (levelNumber >= 4) {
 			if (FlxG.collide(player, level.spike)) {
 				collided = true;
@@ -185,11 +194,13 @@ class LevelState extends FlxState
 		
 		if (player.y > level.map.height + player.height) {
 			Player.CAN_MOVE = false;
+			FlxG.camera.fade(FlxColor.BLACK, .33, false, function() {
 			if (levelNumber >= 3) {
-				FlxG.switchState(new LevelState(++levelNumber, 32));
+				FlxG.switchState(new TextState(++levelNumber, 32));
 			} else {
-				FlxG.switchState(new LevelState(++levelNumber, Std.int(level.map.width) - tileSize));
+				FlxG.switchState(new TextState(++levelNumber, Std.int(level.map.width) - tileSize));
 			}
+			});
 		}
 	}
 	
