@@ -31,7 +31,7 @@
 	
 	<set name="BUILD_DIR" value="export" />
 	<classpath name="source" />
-	<assets path="assets" />
+	<assets path="assets"/>
 	
 	<!--------------------------------LIBRARIES------------------------------------->
 
@@ -45,6 +45,8 @@
 	
 	<!--In case you want to use nape with flixel-->
 	<haxelib name="nape" />
+	
+	<haxelib name="sfxr" />
 	
 	<!--------------------------------HAXEDEFINES----------------------------------->
 	

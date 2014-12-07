@@ -6,7 +6,6 @@ import flixel.FlxState;
 import flixel.FlxG;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxColor;
-
 /**
  * ...
  * @author Cxsquared
@@ -170,7 +169,10 @@ class LevelState extends FlxState
 		if (FlxG.collide(player, level.map)) {
 			Player.CAN_MOVE = true;
 			if (starting) {
-				//FlxG.camera.shake(0.01, 0.5);
+				if (levelNumber != 1 && levelNumber != 4) {
+					SoundController.playHit();
+				}
+				starting = false;
 			} else {
 				//FlxG.camera.shake(0.001, 0.001);
 			}
@@ -188,8 +190,10 @@ class LevelState extends FlxState
 		
 		if (collided) {
 			Player.CAN_MOVE = false;
+			starting = true;
 			player.x = startingX;
 			player.y = startingY;
+			SoundController.playHurt();
 		}
 		
 		if (player.y > level.map.height + player.height) {
@@ -203,5 +207,7 @@ class LevelState extends FlxState
 			});
 		}
 	}
+	
+	
 	
 }

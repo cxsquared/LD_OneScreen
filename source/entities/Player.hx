@@ -4,7 +4,7 @@ import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.util.FlxRandom;
-
+import flixel.util.FlxMath;
 /**
  * ...
  * @author Cxsquared
@@ -21,6 +21,8 @@ class Player extends FlxSprite
 	private var jumpTime:Float = -1;
 	private var timesJumped:Int = 0;
 	private var jumpKeys:Array<String>;
+	
+	private var previousVelocity:Float = -1;
 	
 	var jumping:Bool = false;
 
@@ -53,7 +55,13 @@ class Player extends FlxSprite
 			}
 			
 			if (CAN_JUMP) {
-				jump();			
+				jump();
+				
+				if (previousVelocity == maxVelocity.y && velocity.y == 0) {
+					SoundController.playHit();
+				}
+			
+				previousVelocity = Math.abs(velocity.y);
 			}
 		}
 		super.update();
@@ -64,6 +72,7 @@ class Player extends FlxSprite
 			if ((velocity.y == 0) || (timesJumped < JUMPS_ALLOWED)) {
 				timesJumped++;
 				jumpTime = 0;
+				SoundController.playJump();					
 			}
 		}
 		

@@ -46,17 +46,17 @@ class TextState extends FlxState
 	
 	private function setTimer():Void {
 		if (levelNumber == 1) {
-			timer = new FlxTimer(5.0, changeLevel, 1);
+			timer = new FlxTimer(5.0, levelTimer, 1);
 		} else if (levelNumber == 2) {
-			timer = new FlxTimer(4.0, changeLevel, 1);
+			timer = new FlxTimer(4.0, levelTimer, 1);
 		} else if (levelNumber == 3) {
-			timer = new FlxTimer(4.0, changeLevel, 1);
+			timer = new FlxTimer(4.0, levelTimer, 1);
 		} else if (levelNumber == 4) {
-			timer = new FlxTimer(3.0, changeLevel, 1);
+			timer = new FlxTimer(3.0, levelTimer, 1);
 		} else if (levelNumber == 5) {
-			timer = new FlxTimer(4.0, changeLevel, 1);
+			timer = new FlxTimer(4.0, levelTimer, 1);
 		} else {
-			timer = new FlxTimer(5.0, changeLevel, 1);
+			timer = new FlxTimer(5.0, levelTimer, 1);
 		}
 	}
 	
@@ -86,10 +86,19 @@ class TextState extends FlxState
 		super.destroy();
 	}
 	
-	private function changeLevel(Timer:FlxTimer):Void {
+	override public function update():Void {
+		if (FlxG.keys.anyJustPressed(["SPACE", "W", "S", "D", "A", "UP", "DOWN", "LEFT", "RIGHT"])) {
+			changeLevel();
+		}
+	}
+	
+	private function levelTimer(Timer:FlxTimer):Void {
+		changeLevel();
+	}
+	
+	private function changeLevel():Void {
 		FlxG.camera.fade(FlxColor.BLACK, 0.5, false, function() {
 			FlxG.switchState(new LevelState(levelNumber, tileSize));
 		});
 	}
-		
 }
