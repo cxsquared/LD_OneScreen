@@ -3,6 +3,7 @@ package ;
 import flixel.util.FlxRandom;
 import vault.Sfxr;
 import vault.SfxrParams;
+import flixel.FlxG;
 
 /**
  * ...
@@ -47,7 +48,7 @@ class SoundController
 		sfxr.play();
 	}
 	
-		public static function playHurt():Void {
+	public static function playHurt():Void {
 		var random:Int = FlxRandom.intRanged(0, 3);
 		var params:SfxrParams;
 		if (random == 0) {
@@ -63,6 +64,10 @@ class SoundController
 		}
 		var sfxr = new Sfxr(params);
 		sfxr.play();
+	}
+	
+	public static function playMusic():Void {
+		FlxG.sound.playMusic(AssetPaths.dtrh_master01__mp3);
 	}
 	
 }
