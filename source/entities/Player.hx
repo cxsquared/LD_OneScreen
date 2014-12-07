@@ -3,6 +3,7 @@ package entities;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.FlxG;
+import flixel.util.FlxRandom;
 
 /**
  * ...
@@ -10,10 +11,11 @@ import flixel.FlxG;
  */
 class Player extends FlxSprite
 {
-	public static var MOVE_SPEED:Int = 75;
-	public static var GRAVITY:Int = 500;
+	public static var MOVE_SPEED:Int = 10;
+	public static var GRAVITY:Int = 100;
 	public static var JUMP_SPEED:Int = 200;
-	public static var JUMPS_ALLOWED = 2;
+	public static var JUMPS_ALLOWED = 0;
+	public static var CAN_JUMP = false;
 	
 	private var jumpTime:Float = -1;
 	private var timesJumped:Int = 0;
@@ -21,11 +23,11 @@ class Player extends FlxSprite
 	
 	var jumping:Bool = false;
 
-	public function new(X:Float=0, Y:Float=0) 
+	public function new(X:Float=0, Y:Float=0, size:Int=16) 
 	{
 		super(X, Y);
 		
-		makeGraphic(16, 16, FlxColor.PURPLE);
+		makeGraphic(size, size, FlxRandom.color());
 		
 		drag.set(MOVE_SPEED * 8, MOVE_SPEED * 8);
 		maxVelocity.set(MOVE_SPEED, JUMP_SPEED);
@@ -48,7 +50,9 @@ class Player extends FlxSprite
 			acceleration.x = drag.x;
 		}
 		
-		jump();
+		if (CAN_JUMP) {
+			jump();			
+		}
 		
 		super.update();
 	}

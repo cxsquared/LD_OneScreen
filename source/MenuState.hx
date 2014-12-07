@@ -27,7 +27,7 @@ class MenuState extends FlxState
 	{
 		super.create();
 		
-		FlxG.switchState(new PlayState());
+		FlxG.switchState(new LevelState(3, 32));
 		
 		cubes = new FlxSpriteGroup();
 		
@@ -86,10 +86,6 @@ class MenuState extends FlxState
 					cube.kill();
 				}
 			}
-		}
-		
-		if (FlxG.keys.justPressed.SPACE) {
-			FlxG.switchState(new PlayState());
 		}
 		
 		cubes.update();

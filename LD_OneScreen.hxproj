@@ -7,7 +7,7 @@
     <movie path="Project.xml" />
     <movie fps="60" />
     <movie width="640" />
-    <movie height="480" />
+    <movie height="640" />
     <movie version="3" />
     <movie minorVersion="0" />
     <movie platform="NME" />
