@@ -108,7 +108,7 @@ class LevelState extends FlxState
 		} else if (levelNumber == 5 ) {
 			Player.MOVE_SPEED = 125;
 			Player.GRAVITY = 850;
-			Player.JUMP_SPEED = 400;
+			Player.JUMP_SPEED = 375;
 			Player.JUMPS_ALLOWED = 2;
 			Player.CAN_JUMP = true;
 			//trace("Level 3 stats set");
