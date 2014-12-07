@@ -11,11 +11,11 @@ import flixel.util.FlxRandom;
  */
 class Player extends FlxSprite
 {
-	public static var MOVE_SPEED:Int = 10;
-	public static var GRAVITY:Int = 100;
+	public static var MOVE_SPEED:Int = 100;
+	public static var GRAVITY:Int = 500;
 	public static var JUMP_SPEED:Int = 200;
-	public static var JUMPS_ALLOWED = 0;
-	public static var CAN_JUMP = false;
+	public static var JUMPS_ALLOWED:Int = 2;
+	public static var CAN_JUMP:Bool = false;
 	
 	private var jumpTime:Float = -1;
 	private var timesJumped:Int = 0;
@@ -68,7 +68,7 @@ class Player extends FlxSprite
 		if ((FlxG.keys.anyPressed(jumpKeys)) && (jumpTime >= 0)) {
 			jumpTime += FlxG.elapsed;
 			
-			if (jumpTime > 0.25) {
+			if (jumpTime > 0.45) {
 				jumpTime = 1;
 			} else if (jumpTime > 0) {
 				velocity.y = -0.6 * maxVelocity.y;

@@ -34,6 +34,7 @@ class LevelState extends FlxState
 		FlxG.worldBounds.set(0, 0, level.map.width, level.map.height);
 		
 		addPlayer(tileSize);
+		setPlayerAttributes();
 		
 		zoomCamera();
 	}
@@ -44,10 +45,39 @@ class LevelState extends FlxState
 		} else if (levelNumber == 2 ) {
 			add(player = new Player(16, 8, size));
 		} else if (levelNumber == 3 ) {
-			add(player = new Player(64, 16, size));
+			add(player = new Player(256, 32, size));
 		} else {
 			add(player = new Player(0, 0, size));
 		}
+	}
+	
+	private function setPlayerAttributes():Void {
+		if (levelNumber == 1) {
+			Player.MOVE_SPEED = 25;
+			Player.GRAVITY = 100;
+			Player.JUMP_SPEED = 0;
+			Player.JUMPS_ALLOWED = 0;
+			Player.CAN_JUMP = false;
+		} else if (levelNumber == 2 ) {
+			Player.MOVE_SPEED = 50;
+			Player.GRAVITY = 250;
+			Player.JUMP_SPEED = 100;
+			Player.JUMPS_ALLOWED = 1;
+			Player.CAN_JUMP = true;
+		} else if (levelNumber == 3 ) {
+			Player.MOVE_SPEED = 100;
+			Player.GRAVITY = 500;
+			Player.JUMP_SPEED = 400;
+			Player.JUMPS_ALLOWED = 2;
+			Player.CAN_JUMP = true;
+		} else {
+			Player.MOVE_SPEED = 100;
+			Player.GRAVITY = 500;
+			Player.JUMP_SPEED = 200;
+			Player.JUMPS_ALLOWED = 0;
+			Player.CAN_JUMP = true;
+		}
+
 	}
 	
 	private function zoomCamera():Void {
