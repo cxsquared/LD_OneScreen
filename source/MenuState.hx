@@ -27,7 +27,7 @@ class MenuState extends FlxState
 	{
 		super.create();
 		
-		FlxG.switchState(new LevelState(1, 1));
+		FlxG.switchState(new LevelState(5, 32));
 		
 		cubes = new FlxSpriteGroup();
 		

@@ -4,6 +4,7 @@ import entities.MapLevel;
 import entities.Player;
 import flixel.FlxState;
 import flixel.FlxG;
+import flixel.util.FlxDestroyUtil;
 
 /**
  * ...
@@ -19,6 +20,8 @@ class LevelState extends FlxState
 	
 	var startingX:Int;
 	var startingY:Int;
+	
+	var collided:Bool;
 	
 	public function new(levelNumber:Int, tileSize:Int) {
 		super();
@@ -61,8 +64,11 @@ class LevelState extends FlxState
 			startingX = 256;
 			startingY = -32;
 		} else if (levelNumber == 4 ) {
-			startingX = 1152;
-			startingY = 70;
+			startingX = 576;
+			startingY = 40;
+		}else if (levelNumber == 5 ) {
+			startingX = 32;
+			startingY = -32;
 		} else {
 			startingX = 0;
 			startingY = 0;
@@ -93,9 +99,16 @@ class LevelState extends FlxState
 			Player.CAN_JUMP = true;
 			//trace("Level 3 stats set");
 		}else if (levelNumber == 4 ) {
-			Player.MOVE_SPEED = 750;
-			Player.GRAVITY = 2000;
-			Player.JUMP_SPEED = 625;
+			Player.MOVE_SPEED = 125;
+			Player.GRAVITY = 850;
+			Player.JUMP_SPEED = 300;
+			Player.JUMPS_ALLOWED = 2;
+			Player.CAN_JUMP = true;
+			//trace("Level 3 stats set");
+		} else if (levelNumber == 5 ) {
+			Player.MOVE_SPEED = 125;
+			Player.GRAVITY = 850;
+			Player.JUMP_SPEED = 400;
 			Player.JUMPS_ALLOWED = 2;
 			Player.CAN_JUMP = true;
 			//trace("Level 3 stats set");
@@ -122,7 +135,9 @@ class LevelState extends FlxState
 		} else if (levelNumber == 3) {
 			FlxG.camera.zoom = 1.25; 
 		} else if (levelNumber == 4) {
-			FlxG.camera.zoom = 0.5; 
+			FlxG.camera.zoom = 1; 
+		}else if (levelNumber == 5) {
+			FlxG.camera.zoom = .8333; 
 		} else {
 			FlxG.camera.zoom = 1;
 		}
@@ -134,12 +149,12 @@ class LevelState extends FlxState
 	 */
 	override public function destroy():Void
 	{
-		level.background.destroy();
-		level.map.destroy();
+		level.background = FlxDestroyUtil.destroy(level.background);
+		level.map = FlxDestroyUtil.destroy(level.map);
 		if (levelNumber >= 4) {
 			//level.spike.destroy();
 		}
-		player.destroy();
+		player = FlxDestroyUtil.destroy(player);
 		super.destroy();
 	}
 
@@ -150,21 +165,28 @@ class LevelState extends FlxState
 	{
 		if (FlxG.collide(player, level.map)) {
 			Player.CAN_MOVE = true;
-		} else {
-			if (levelNumber >= 4) {
-				if (FlxG.collide(player, level.spike)) {
-					player.x = startingX;
-					player.y = startingY;
-				}
+		} else if (levelNumber >= 4) {
+			if (FlxG.collide(player, level.spike)) {
+				collided = true;
+			} else {
+				collided = false;
 			}
+		} else {
+			collided = false;
 		}
 		
 		super.update();	
 		
+		if (collided) {
+			Player.CAN_MOVE = false;
+			player.x = startingX;
+			player.y = startingY;
+		}
+		
 		if (player.y > level.map.height + player.height) {
 			Player.CAN_MOVE = false;
 			if (levelNumber >= 3) {
-				FlxG.switchState(new LevelState(++levelNumber, 64));
+				FlxG.switchState(new LevelState(++levelNumber, 32));
 			} else {
 				FlxG.switchState(new LevelState(++levelNumber, Std.int(level.map.width) - tileSize));
 			}
