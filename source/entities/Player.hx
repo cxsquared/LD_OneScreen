@@ -32,13 +32,29 @@ class Player extends FlxSprite
 	{
 		super(X, Y);
 		
-		makeGraphic(size, size, FlxRandom.color());
+		if (size >= 32) {
+			loadCharacter();
+		} else {
+			makeGraphic(size, size, FlxRandom.color());
+		}
 		
 		drag.set(MOVE_SPEED * 8, MOVE_SPEED * 8);
 		maxVelocity.set(MOVE_SPEED, JUMP_SPEED);
 		acceleration.y = GRAVITY;
 		
 		jumpKeys = ["W", "UP", "SPACE"];
+	}
+	
+	private function loadCharacter():Void {
+		var ran:Int = FlxRandom.intRanged(0, 4);
+		
+		if (ran == 1) {
+			loadGraphic(AssetPaths.char1__png, false, 32, 32);
+		} else if (ran == 2) {
+			loadGraphic(AssetPaths.char2__png, false, 32, 32);
+		} else {
+			loadGraphic(AssetPaths.char3__png, false, 32, 32);
+		}
 	}
 	
 	override public function update():Void {
